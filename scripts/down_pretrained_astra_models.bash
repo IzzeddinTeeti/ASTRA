@@ -1,0 +1,6 @@
+# Download Pretrained ASTRA Models
+mkdir -p pretrained_astra_weights
+cd pretrained_astra_weights
+gdown 1k5XclP7XRwiJOXkB7QJUn9OSDuRWEd8c -O pretrained_astra_weights.zip
+unzip pretrained_astra_weights.zip
+rm pretrained_astra_weights.zip

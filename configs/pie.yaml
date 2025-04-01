@@ -1,0 +1,74 @@
+DATASET: 'PIE'
+MODE: 'train' # 'train', 'test'
+UNET_MODE: 'testing' # 'training', 'testing' (Use training while pretraining unet)
+BEST_CADE: 13.08
+BEST_CFDE: 30.35
+BEST_ARB: 15.27
+BEST_FRB: 32.79
+
+PREDICTION:
+  OBS_TIME: 0.5
+  PRED_TIME: 1.0
+  TRAJ_SCALE: 1
+
+TRAIN:
+  DEVICE: 0  # 0,1,2,3,4,5,6,7
+  BATCH_SIZE: 16
+  NUM_WORKERS: 8
+  NUM_EPOCH: 250
+  LR: 1e-3
+  LR_SCHEDULER: 'CosineAnnealing' # 'CosineAnnealing', 'ReduceLROnPlateau'
+  MIN_LR: 0
+  PATIENCE: 5
+  FACTOR: 0.5
+  MOMENTUM: 0.9
+  W_DECAY: 5e-4
+  SEED: 1
+  OPTIMIZER: "AdamW" # 'Adam', 'SGD', 'AdamW'
+
+VAL:
+  BATCH_SIZE: 1
+  FREQ: 1
+
+DATA:
+  DATASET_NAME: 'PIE'
+  FREQUENCY: 30
+  MIN_RESHAPE_SIZE: 224
+  MEAN: [0.485, 0.456, 0.406]
+  STD: [0.229, 0.224, 0.225]
+  BBOX_TYPE: 'cxcywh'
+  NORMALIZE: 'zero-one'
+  FPS: 30
+  MIN_BBOX: [0,0,0,0]
+  MAX_BBOX: [1920, 1080, 1920, 1080] 
+
+MODEL:
+  USE_PRETRAINED_UNET: False
+  USE_SOCIAL: False
+  USE_VAE: False  # Set True for stochastic predictions, False for deterministic predictions
+  SPATIAL_DIM: 32
+  UNET_DIM: 16  
+  TEMP_DIM: 8 
+  VELO_DIM: 8
+  RAND_WALK_LEN: 4
+  EDGE_CRITERIA: 'distance' # 'distance', 'cosine'
+  SHUFFLE: True
+  ENC_LAYERS: 1
+  DEC_LAYERS: 1
+  TRANS_MASK: True
+  D_MODEL: 256
+  NHEAD: 2
+  DIM_FEEDFORWARD: 128
+  DROPOUT: 0.2
+  SAVE_MODEL: True
+  FEATURE_EXTRACTOR: 'resnet18'
+  FEATURE_DIM: 512 # Use 512 with resnet 34 and resnet 18 and 2048 with resnet 50 
+  INC_VELO: False
+
+LOSS:
+  FUN: 'SmoothL1' # 'MSE', 'SmoothL1', 'RMSE'
+  WEIGHTED_PENALTY: 'quadratic'   # False, 'linear', 'quadratic', 'exponential', 'parabolic'
+  START_WEIGHT: 1
+  END_WEIGHT: 2
+  MAX_WEIGHT: 3
+  MIN_WEIGHT: 1

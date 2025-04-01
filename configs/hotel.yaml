@@ -1,0 +1,72 @@
+DATASET: 'ETH_UCY'
+SUBSET: 'hotel' # 'eth', 'hotel', 'univ', 'zara01', 'zara02'
+MODE: 'training' # 'training', 'testing'
+UNET_MODE: 'testing' # 'training', 'testing' (Use training while pretraining unet)
+BEST_ADE: 0.11
+BEST_FDE: 0.17
+
+PREDICTION:
+  OBS_TIME: 3.2
+  PRED_TIME: 4.6
+  TRAJ_SCALE: 1
+
+TRAIN:
+  DEVICE: 0  # 0,1,2,3,4,5,6,7
+  BATCH_SIZE: 1
+  NUM_WORKERS: 4
+  NUM_EPOCH: 200
+  LR: 1e-3
+  LR_SCHEDULER: 'CosineAnnealing' # 'CosineAnnealing', 'ReduceLROnPlateau'
+  MIN_LR: 0
+  PATIENCE: 5
+  FACTOR: 0.5
+  MOMENTUM: 0.9
+  W_DECAY: 5e-4
+  SEED: 1
+  OPTIMIZER: "AdamW" # 'Adam', 'SGD', 'AdamW'
+
+VAL:
+  BATCH_SIZE: 1
+  FREQ: 1
+
+DATA:
+  DATASET_NAME: 'ETH_UCY'
+  FREQUENCY: 2.5
+  MIN_RESHAPE_SIZE: 224
+  MEAN: [0.485, 0.456, 0.406]
+  STD: [0.229, 0.224, 0.225]
+  SEQ_AUG: True
+  SEQ_AUG_P: 0.5   
+
+MODEL:
+  USE_PRETRAINED_UNET: True
+  USE_SOCIAL: False
+  USE_VAE: True  # Set True for stochastic predictions, False for deterministic predictions
+  SPATIAL_DIM: 16
+  UNET_DIM: 16  
+  TEMP_DIM: 8 
+  VELO_DIM: 8
+  RAND_WALK_LEN: 4
+  LATENT_DIM: 32
+  K: 20
+  EDGE_CRITERIA: 'distance' # 'distance', 'cosine'
+  SHUFFLE: True
+  ENC_LAYERS: 1
+  DEC_LAYERS: 1
+  TRANS_MASK: True
+  D_MODEL: 256
+  NHEAD: 2
+  DIM_FEEDFORWARD: 128
+  DROPOUT: 0.2
+  SAVE_MODEL: True
+  FEATURE_EXTRACTOR: 'resnet18'
+  FEATURE_DIM: 512 # Use 512 with resnet 34 and resnet 18 and 2048 with resnet 50 
+  INC_VELO: False
+
+LOSS:
+  FUN: 'SmoothL1' # 'MSE', 'SmoothL1'
+  WEIGHTED_PENALTY: 'parabolic'   # False, 'linear', 'quadratic', 'exponential', 'parabolic'
+  START_WEIGHT: 1
+  END_WEIGHT: 2
+  MAX_WEIGHT: 2
+  MIN_WEIGHT: 1
